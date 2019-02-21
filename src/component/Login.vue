@@ -32,6 +32,12 @@
 				password:'',
 			}
 		},
+
+		//组件内的守卫
+		beforeRouteEnter:(to,from,next) => {
+			//this.$store.dispatch('setUser',null)
+			next(vm => vm.$store.dispatch('setUser',null))
+		},
 		methods:{
 			onSubmit(){
 				axios.get('/users.json')
@@ -54,9 +60,11 @@
 					 	//console.log(result)
 					 	//判断result的长度是否大于0
 					 	if( result != null && result.length >0 ) {
+					 		this.$store.dispatch('setUser',result[0].email)
 					 		this.$router.push({name: 'homeLink'})
 					 	}else{
 					 		alert('账号或密码错误')
+					 		this.$store.dispatch('setUser',null)
 					 	}
 					 })
 			}
